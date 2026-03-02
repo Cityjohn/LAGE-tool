@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>LAGE-tool — Price vs Bandwidth & VRAM</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        header .nav-back { justify-self: start; }
+        header .nav-next { justify-self: end; }
+        header .header-center {
+            grid-column: 2;
+            text-align: center;
+            min-width: 200px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        header .subheader {
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 6px;
+            opacity: 0.95;
+        }
+        header .description {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+        
+        header .nav-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        header .nav-btn.nav-back {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        header .nav-btn.nav-back:hover { background: rgba(255,255,255,0.3); border-color: white; }
+        header .nav-btn.nav-next {
+            background: white;
+            color: #1e3c72;
+            border: 2px solid transparent;
+        }
+        header .nav-btn.nav-next:hover { opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        
+        @media (max-width: 768px) {
+            body { padding: 12px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+            header { grid-template-columns: 1fr; padding: 20px 16px; gap: 12px; }
+            header .header-center { grid-column: 1; min-width: 0; }
+            header h1 { font-size: 1.75em; }
+            header .subheader { font-size: 1em; }
+            header .description { font-size: 0.75em; }
+            .chart-container { padding: 16px; height: 420px; min-height: 360px; }
+            .chart-wrapper { min-height: 320px; }
+            .chart-hint { font-size: 0.8em; padding: 0 8px; }
+            .info-box { margin: 16px 12px; padding: 16px; }
+            .info-box h3 { font-size: 1.05em; }
+            .info-box li { font-size: 0.9em; }
+            footer { padding: 16px 12px; font-size: 0.85em; }
+            .stats-grid { grid-template-columns: 1fr; gap: 12px; padding: 20px 16px; }
+            .stat-card { padding: 16px; }
+            .stat-card .value { font-size: 1.5em; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 8px; }
+            header { padding: 16px 12px; }
+            header h1 { font-size: 1.5em; }
+            .chart-container { padding: 12px; height: 360px; min-height: 300px; }
+            .stats-grid { padding: 16px 12px; }
+        }
+        @media (max-width: 768px) and (orientation: landscape) {
+            .chart-container { height: 320px; min-height: 280px; }
+        }
+        
+        .chart-container {
+            padding: 40px;
+            position: relative;
+            height: 600px;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 100%;
+            min-height: 500px;
+        }
+        .chart-hint {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 40px;
+            border-radius: 6px;
+        }
+        
+        .info-box h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info-box li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .legend-item {
+            display: inline-block;
+            margin: 0 15px;
+            font-weight: 600;
+        }
+        
+        .legend-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h4 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        .stat-card .subtext {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="nav-btn nav-back">← Index</a>
+            <div class="header-center">
+                <h1>⚖️ LAGE-tool</h1>
+                <p class="subheader">Local AI Inference GPU Economics</p>
+                <p class="description">Price vs Bandwidth & VRAM · NVIDIA RTX • AMD ROCm • Intel ARC • Cloud Rentals</p>
+                <p style="font-size: 0.9em; margin-top: 10px;">Color by manufacturer · Shape by series</p>
+            </div>
+            <a href="gpu-comparison.html" class="nav-btn nav-next">Comparison Table →</a>
+        </header>
+        
+        <div class="chart-container">
+            <p class="chart-hint">Click legend items to show or hide each series (filters both charts). Scroll to zoom, drag to pan.</p>
+            <div class="chart-wrapper">
+                <canvas id="priceVsBandwidth"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <canvas id="priceVsVram"></canvas>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>💡 Reading the Chart</h3>
+            <ul>
+                <li><strong>X-axis (Price):</strong> Purchase price in EUR (Marktplaats.nl) or € equivalent for 500 hrs (cloud)</li>
+                <li><strong>Top chart (Bandwidth):</strong> Y-axis = memory bandwidth in GB/s - higher is better for LLM inference</li>
+                <li><strong>Bottom chart (VRAM):</strong> Y-axis = VRAM in GB - model size capacity</li>
+                <li><strong>Colors:</strong> 🟢 NVIDIA • 🔴 AMD • 🔵 Intel (manufacturer brand colors)</li>
+                <li><strong>Shapes:</strong> Circle, triangle, rect, cross, star — each series has its own shape</li>
+                <li><strong>Best Value:</strong> Look for points at the top-left (high bandwidth, low price)</li>
+                <li><strong>Filter:</strong> Click legend items at the top of the chart to show or hide each series</li>
+                <li><strong>Zoom & Pan:</strong> Scroll to zoom in/out, drag to pan. Double-click to reset zoom.</li>
+                <li><strong>Hover:</strong> Mouse over points to see detailed specs including VRAM</li>
+            </ul>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Best Budget Value</h4>
+                <div class="value">RTX 3060 12GB</div>
+                <div class="subtext">12GB + INT8 @ €225</div>
+            </div>
+            <div class="stat-card">
+                <h4>Best Bandwidth/Price</h4>
+                <div class="value">RTX 3080 10GB</div>
+                <div class="subtext">760 GB/s @ €375</div>
+            </div>
+            <div class="stat-card">
+                <h4>Best AMD Value</h4>
+                <div class="value">RX 7900 XTX</div>
+                <div class="subtext">24GB + 960 GB/s @ €725</div>
+            </div>
+            <div class="stat-card">
+                <h4>Best Intel Budget</h4>
+                <div class="value">Arc B580</div>
+                <div class="subtext">12GB + 456 GB/s @ €255</div>
+            </div>
+            <div class="stat-card">
+                <h4>Best Performance</h4>
+                <div class="value">RTX 5090</div>
+                <div class="subtext">32GB + 1792 GB/s + FP4</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>🎯 Key Insights by Series</h3>
+            <ul>
+                <li><strong>🟢 NVIDIA RTX 30/40/50:</strong> Excellent value, INT8/INT4/FP4 support, bandwidth 224-1792 GB/s</li>
+                <li><strong>🟣 NVIDIA Cloud:</strong> T4 to B200 - price = € equivalent for 500 hrs rental</li>
+                <li><strong>🖥️ NVIDIA DGX Spark:</strong> Compact AI system (~$4.7k / €2.8k–4.2k) — 128GB, 273 GB/s, 1 petaFLOP FP4</li>
+                <li><strong>🔴 AMD ROCm:</strong> RDNA 2-4 + Instinct MI300X, 188-5300 GB/s, ROCm for inference</li>
+                <li><strong>🔵 Intel ARC:</strong> Alchemist & Battlemage, XMX INT4, 188-616 GB/s, SYCL/llama.cpp</li>
+                <li><strong>Sweet Spots:</strong> RTX 3060 12GB (budget), Arc B580 (Intel), RX 7900 XTX (AMD), RTX 5090 (performance)</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p><strong>Data Source:</strong> Marktplaats.nl (consumer) • Modal/Lambda (cloud) • NVIDIA DGX (systems) • March 2026</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Consumer: lowest listing + €50 buffer • Cloud: € equivalent for 500 hrs ($×0.95×500)</p>
+        </footer>
+    </div>
+    
+    <script src="gpu-data.js"></script>
+    <script>
+        // Single source: gpu-data.js (works with file:// and http)
+        if (window.GPU_DATA && Array.isArray(window.GPU_DATA) && window.GPU_DATA.length > 0) {
+            initCharts(window.GPU_DATA);
+        } else {
+            document.querySelector('.chart-container').innerHTML =
+                '<p style="padding:40px;color:#dc3545;">Failed to load GPU data. Ensure gpu-data.js exists.</p>';
+        }
+
+        function initCharts(gpuData) {
+        // Color by manufacturer, shape by series
+        const manufacturerBySeries = {
+            '30': 'nvidia', '40': 'nvidia', '50': 'nvidia', 'cloud': 'nvidia', 'dgx': 'nvidia',
+            'rdna2': 'amd', 'rdna3': 'amd', 'rdna4': 'amd', 'instinct': 'amd',
+            'arcA': 'intel', 'arcB': 'intel'
+        };
+        const manufacturerColors = {
+            nvidia: '#76B900',
+            amd: '#ED1C24',
+            intel: '#0071C5'
+        };
+        const seriesShapes = {
+            '30': 'circle', '40': 'triangle', '50': 'rect', 'cloud': 'cross', 'dgx': 'star',
+            'rdna2': 'circle', 'rdna3': 'triangle', 'rdna4': 'rect', 'instinct': 'star',
+            'arcA': 'circle', 'arcB': 'triangle'
+        };
+        
+        const seriesLabels = {
+            '30': 'RTX 30',
+            '40': 'RTX 40',
+            '50': 'RTX 50',
+            'cloud': 'NVIDIA Cloud',
+            'rdna2': 'AMD RDNA 2',
+            'rdna3': 'AMD RDNA 3',
+            'rdna4': 'AMD RDNA 4',
+            'instinct': 'AMD Instinct',
+            'arcA': 'Intel Arc A',
+            'arcB': 'Intel Arc B',
+            'dgx': 'NVIDIA DGX'
+        };
+        
+        // Group by series for coloring
+        const seriesGroups = {};
+        Object.keys(seriesLabels).forEach(s => { seriesGroups[s] = []; });
+        
+        const parseVram = (v) => parseInt(String(v).replace(/[^0-9]/g, '')) || 0;
+        
+        gpuData.forEach(gpu => {
+            seriesGroups[gpu.series].push({
+                x: gpu.price,
+                y: gpu.bandwidth,
+                yVram: parseVram(gpu.vram),
+                label: gpu.name,
+                vram: gpu.vram,
+                note: gpu.note || ''
+            });
+        });
+        
+        // Prepare datasets by series (only non-empty) — color by manufacturer, shape by series
+        const datasets = Object.keys(seriesGroups)
+            .filter(series => seriesGroups[series].length > 0)
+            .map(series => {
+                const mfr = manufacturerBySeries[series];
+                const color = manufacturerColors[mfr];
+                return {
+                    label: seriesLabels[series],
+                    data: seriesGroups[series],
+                    borderColor: color,
+                    backgroundColor: color + '80',
+                    pointRadius: 6,
+                    pointHoverRadius: 10,
+                    pointStyle: seriesShapes[series],
+                    borderWidth: 3,
+                    showLine: false
+                };
+            });
+        
+        // VRAM datasets (same structure, y = vram for chart)
+        const vramDatasets = datasets.map(ds => ({
+            ...ds,
+            data: ds.data.map(p => ({ ...p, y: p.yVram, bandwidth: p.y }))
+        }));
+        
+        const ZOOM_SPEED = 0.12;
+        const dataMaxX = Math.max(...gpuData.map(d => d.price)) * 1.05;
+        const dataMaxY = Math.max(...gpuData.map(d => d.bandwidth));
+        const dataMaxVram = Math.max(...gpuData.map(d => parseVram(d.vram)));
+        const zoomFromOrigin = (chart, deltaY, maxY) => {
+            const x = chart.scales.x, y = chart.scales.y;
+            const factor = deltaY > 0 ? 1 + ZOOM_SPEED : 1 - ZOOM_SPEED;
+            let xRange = (x.max - x.min) * factor;
+            let yRange = (y.max - y.min) * factor;
+            xRange = Math.max(50, Math.min(xRange, dataMaxX));
+            yRange = Math.max(50, Math.min(yRange, maxY));
+            chart.options.scales.x.min = 0;
+            chart.options.scales.x.max = xRange;
+            chart.options.scales.y.min = 0;
+            chart.options.scales.y.max = yRange;
+            chart.update('none');
+        };
+        const anchorOrigin = (chart) => {
+            const x = chart.scales.x, y = chart.scales.y;
+            const xRange = x.max - x.min, yRange = y.max - y.min;
+            chart.options.scales.x.min = 0;
+            chart.options.scales.x.max = Math.max(xRange, 1);
+            chart.options.scales.y.min = 0;
+            chart.options.scales.y.max = Math.max(yRange, 1);
+            chart.update('none');
+        };
+        const syncLegend = (sourceChart, targetChart, datasetIndex) => {
+            const meta = targetChart.getDatasetMeta(datasetIndex);
+            const sourceMeta = sourceChart.getDatasetMeta(datasetIndex);
+            meta.hidden = sourceMeta.hidden;
+            targetChart.update('none'); // update without animation
+        };
+        
+        // Plugin to add 25px space between top legend and chart
+        Chart.register({
+            id: 'legendSpacing',
+            beforeLayout(chart) {
+                const legend = chart.legend;
+                if (legend && !legend._spacingPatched && legend.options.position === 'top') {
+                    legend._spacingPatched = true;
+                    const originalFit = legend.fit;
+                    legend.fit = function fit() {
+                        originalFit.call(this);
+                        this.height += 25;
+                    };
+                }
+            }
+        });
+
+        const legendOptions = {
+            display: true,
+            position: 'top',
+            labels: {
+                font: { size: 14, weight: 'bold' },
+                padding: 15,
+                usePointStyle: true,
+                boxWidth: 14,
+                boxHeight: 14
+            }
+        };
+        
+        // Create the bandwidth chart
+        const ctx = document.getElementById('priceVsBandwidth').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Price vs Memory Bandwidth',
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    legend: {
+                        ...legendOptions,
+                        onClick: function(e, legendItem, legend) {
+                            const idx = legendItem.datasetIndex;
+                            const meta = legend.chart.getDatasetMeta(idx);
+                            meta.hidden = meta.hidden === null ? !legend.chart.data.datasets[idx].hidden : null;
+                            if (typeof chartVram !== 'undefined') syncLegend(legend.chart, chartVram, idx);
+                            legend.chart.update();
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        displayColors: false,
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        callbacks: {
+                            title: function(context) {
+                                return context[0].raw.label;
+                            },
+                            label: function(context) {
+                                const priceLine = context.raw.note
+                                    ? `Price: €${context.raw.x} (${context.raw.note})`
+                                    : `Price: €${context.raw.x}`;
+                                return [
+                                    priceLine,
+                                    `Bandwidth: ${context.raw.y} GB/s`,
+                                    `VRAM: ${context.raw.vram}`,
+                                    `Efficiency: ${(context.raw.y / context.raw.x * 100).toFixed(2)} GB/s per €100`
+                                ];
+                            }
+                        }
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: { enabled: false },
+                            pinch: { enabled: true },
+                            mode: 'xy',
+                            onZoomComplete: ({ chart }) => anchorOrigin(chart)
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            onPanComplete: ({ chart }) => anchorOrigin(chart)
+                        },
+                        limits: {
+                            x: { min: 0 },
+                            y: { min: 0 }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Price (EUR)',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + Math.round(value);
+                            },
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Memory Bandwidth (GB/s)',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return Math.round(value) + ' GB/s';
+                            },
+                            font: {
+                                size: 12
+                            }
+                        },
+                        afterFit: (scale) => { scale.width = 110; }
+                    }
+                }
+            }
+        });
+        
+        // Create the VRAM chart (shares filter with bandwidth chart)
+        const ctxVram = document.getElementById('priceVsVram').getContext('2d');
+        const chartVram = new Chart(ctxVram, {
+            type: 'line',
+            data: { datasets: vramDatasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Price vs VRAM',
+                        font: { size: 20, weight: 'bold' },
+                        padding: 20
+                    },
+                    legend: {
+                        ...legendOptions,
+                        onClick: function(e, legendItem, legend) {
+                            const idx = legendItem.datasetIndex;
+                            const meta = legend.chart.getDatasetMeta(idx);
+                            meta.hidden = meta.hidden === null ? !legend.chart.data.datasets[idx].hidden : null;
+                            syncLegend(legend.chart, chart, idx);
+                            legend.chart.update();
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        displayColors: false,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        callbacks: {
+                            title: function(c) { return c[0].raw.label; },
+                            label: function(c) {
+                                const priceLine = c.raw.note
+                                    ? `Price: €${c.raw.x} (${c.raw.note})`
+                                    : `Price: €${c.raw.x}`;
+                                return [
+                                    priceLine,
+                                    `VRAM: ${c.raw.vram}`,
+                                    `Bandwidth: ${c.raw.bandwidth} GB/s`,
+                                    `VRAM/€100: ${(c.raw.y / c.raw.x * 100).toFixed(2)} GB`
+                                ];
+                            }
+                        }
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: { enabled: false },
+                            pinch: { enabled: true },
+                            mode: 'xy',
+                            onZoomComplete: ({ chart }) => anchorOrigin(chart)
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            onPanComplete: ({ chart }) => anchorOrigin(chart)
+                        },
+                        limits: {
+                            x: { min: 0 },
+                            y: { min: 0 }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'Price (EUR)', font: { size: 16, weight: 'bold' } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { callback: v => '€' + Math.round(v), font: { size: 12 } }
+                    },
+                    y: {
+                        title: { display: true, text: 'VRAM (GB)', font: { size: 16, weight: 'bold' } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { callback: v => Math.round(v) + ' GB', font: { size: 12 } },
+                        afterFit: (scale) => { scale.width = 110; }
+                    }
+                }
+            }
+        });
+        
+        // Fix bandwidth chart legend to sync to VRAM chart (chartVram now exists)
+        chart.options.plugins.legend.onClick = function(e, legendItem, legend) {
+            const idx = legendItem.datasetIndex;
+            const meta = legend.chart.getDatasetMeta(idx);
+            meta.hidden = meta.hidden === null ? !legend.chart.data.datasets[idx].hidden : null;
+            if (chartVram) syncLegend(legend.chart, chartVram, idx);
+            legend.chart.update();
+        };
+        // Custom wheel zoom from origin (0,0)
+        [chart, chartVram].forEach((c, i) => {
+            c.canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                zoomFromOrigin(c, e.deltaY, i === 0 ? dataMaxY : dataMaxVram);
+            }, { passive: false });
+        });
+        } // end initCharts
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Optional local notes (uncomment to exclude from repo)
+# nvidia-gpu-comparison.md
+# nvidia-gpu-comparison-updated.md
+# videocard.md
