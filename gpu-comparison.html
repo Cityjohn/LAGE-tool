@@ -30,7 +30,7 @@
         }
         
         .container {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -130,7 +130,7 @@
         }
         
         .table-wrapper {
-            overflow-x: hidden;
+            overflow-x: auto;
             padding: 12px;
             max-width: 100%;
         }
@@ -140,7 +140,23 @@
             max-width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+            table-layout: fixed;
         }
+        
+        /* Column widths */
+        th:nth-child(1), td:nth-child(1) { width: 18%; } /* GPU Model */
+        th:nth-child(2), td:nth-child(2) { width: 5%; }  /* VRAM */
+        th:nth-child(3), td:nth-child(3) { width: 8%; }  /* Bandwidth */
+        th:nth-child(4), td:nth-child(4) { width: 5%; }  /* FP32 */
+        th:nth-child(5), td:nth-child(5) { width: 5%; }  /* FP8 */
+        th:nth-child(6), td:nth-child(6) { width: 5%; }  /* INT4 */
+        th:nth-child(7), td:nth-child(7) { width: 5%; }  /* FP4 */
+        th:nth-child(8), td:nth-child(8) { width: 14%; } /* Purchase */
+        th:nth-child(9), td:nth-child(9) { width: 8%; }  /* Hours */
+        th:nth-child(10), td:nth-child(10) { width: 7%; } /* Llama tok/s */
+        th:nth-child(11), td:nth-child(11) { width: 7%; } /* FP4 tok/s */
+        th:nth-child(12), td:nth-child(12) { width: 5%; } /* INT8 */
+        th:nth-child(13), td:nth-child(13) { width: 5%; } /* INT4 HW */
         
         thead {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
