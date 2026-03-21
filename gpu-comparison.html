@@ -754,7 +754,10 @@
             header { padding: 12px 16px; }
             header h1 { font-size: 1.5em; }
         }
-    </style>
+    
+        .fp4-native { color: #00e676 !important; font-weight: bold; }
+        .fp4-emulated { color: #ffab40 !important; }
+</style>
 </head>
 <body>
     <div class="container">
@@ -823,8 +826,9 @@
                         <th onclick="sortTable(7)">Purchase/Rental</th>
                         <th onclick="sortTable(8)">Hours for €500</th>
                         <th onclick="sortTable(9)">Llama 8B<br>tok/s</th>
-                        <th onclick="sortTable(10)">INT8</th>
-                        <th onclick="sortTable(11)">INT4</th>
+                        <th onclick="sortTable(10)">FP4<br>tok/s</th>
+                        <th onclick="sortTable(11)">INT8</th>
+                        <th onclick="sortTable(12)">INT4</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -834,7 +838,7 @@
                         <td colspan="12">🟢 NVIDIA RTX 30 Series (Ampere) — INT8 via Tensor Cores, no FP8/INT4</td>
                     </tr>
                     <tr class="col-subheader" data-series="RTX 30">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="RTX 30">
                         <td class="gpu-name">RTX 3050</td>
@@ -847,6 +851,7 @@
                         <td class="price">€200–270</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~25–35</td>
+                        <td class="tokens fp4-emulated">21 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -861,6 +866,7 @@
                         <td class="price">€200–250</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~35–45</td>
+                        <td class="tokens fp4-emulated">34 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -875,6 +881,7 @@
                         <td class="price">€300–380</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~45–55</td>
+                        <td class="tokens fp4-emulated">42 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -889,6 +896,7 @@
                         <td class="price">€300–350</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~48–58</td>
+                        <td class="tokens fp4-emulated">42 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -903,6 +911,7 @@
                         <td class="price">€380–460</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~50–62</td>
+                        <td class="tokens fp4-emulated">57 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -917,6 +926,7 @@
                         <td class="price">€350–400</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~60–75</td>
+                        <td class="tokens fp4-emulated">71 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -931,6 +941,7 @@
                         <td class="price">€550–650</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~65–80</td>
+                        <td class="tokens fp4-emulated">85 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -945,6 +956,7 @@
                         <td class="price">€550–600</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~68–83</td>
+                        <td class="tokens fp4-emulated">85 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -959,6 +971,7 @@
                         <td class="price">€650–700</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~70–85</td>
+                        <td class="tokens fp4-emulated">87 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -973,6 +986,7 @@
                         <td class="price">€1000–1050</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~75–90</td>
+                        <td class="tokens fp4-emulated">94 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -982,7 +996,7 @@
                         <td colspan="12">🟢 NVIDIA RTX 40 Series (Ada Lovelace) — FP8 + INT4 via 4th-gen Tensor Cores</td>
                     </tr>
                     <tr class="col-subheader" data-series="RTX 40">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="RTX 40">
                         <td class="gpu-name">RTX 4060 8GB</td>
@@ -995,6 +1009,7 @@
                         <td class="price">€300–380</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~40–50</td>
+                        <td class="tokens fp4-emulated">25 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1009,6 +1024,7 @@
                         <td class="price">€400–480</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~40–50</td>
+                        <td class="tokens fp4-emulated">25 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1023,6 +1039,7 @@
                         <td class="price">€380–460</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~45–55</td>
+                        <td class="tokens fp4-emulated">27 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1037,6 +1054,7 @@
                         <td class="price">€480–560</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~45–55</td>
+                        <td class="tokens fp4-emulated">27 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1051,6 +1069,7 @@
                         <td class="price">€470–520</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~65–80</td>
+                        <td class="tokens fp4-emulated">47 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1065,6 +1084,7 @@
                         <td class="price">€600–650</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~70–85</td>
+                        <td class="tokens fp4-emulated">47 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1079,6 +1099,7 @@
                         <td class="price">€700–800</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~75–90</td>
+                        <td class="tokens fp4-emulated">47 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1093,6 +1114,7 @@
                         <td class="price">€800–900</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~85–100</td>
+                        <td class="tokens fp4-emulated">63 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1107,6 +1129,7 @@
                         <td class="price">€850–900</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~95–115</td>
+                        <td class="tokens fp4-emulated">67 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1121,6 +1144,7 @@
                         <td class="price">€830–880</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~100–120</td>
+                        <td class="tokens fp4-emulated">69 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1135,6 +1159,7 @@
                         <td class="price">€2200–2250</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~120–145</td>
+                        <td class="tokens fp4-emulated">94 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1144,7 +1169,7 @@
                         <td colspan="12">🟢 NVIDIA RTX 50 Series (Blackwell, Jan 2025) — FP8 + INT4 + FP4 via 5th-gen Tensor Cores <span class="badge badge-new">NEW!</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="RTX 50">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="RTX 50">
                         <td class="gpu-name">RTX 5060</td>
@@ -1157,6 +1182,7 @@
                         <td class="price">€320–400*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~55–70</td>
+                        <td class="tokens fp4-native">67 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1171,6 +1197,7 @@
                         <td class="price">€400–480*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~60–75</td>
+                        <td class="tokens fp4-native">67 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1185,6 +1212,7 @@
                         <td class="price">€450–550*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~60–75</td>
+                        <td class="tokens fp4-native">82 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1199,6 +1227,7 @@
                         <td class="price">€600–750*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~85–105</td>
+                        <td class="tokens fp4-native">100 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1213,6 +1242,7 @@
                         <td class="price">€850–1000*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~100–125</td>
+                        <td class="tokens fp4-native">134 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1227,6 +1257,7 @@
                         <td class="price">€1250–1300*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~115–140</td>
+                        <td class="tokens fp4-native">144 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1241,6 +1272,7 @@
                         <td class="price">€2500–2600*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~160–200</td>
+                        <td class="tokens fp4-native">268 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1250,7 +1282,7 @@
                         <td colspan="12">☁️ NVIDIA Data Center GPUs (Modal Cloud Pricing) <span class="badge badge-new">Cloud Rental</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="Modal">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Rental / Purchase</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Rental / Purchase</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="Modal" class="cloud-gpu">
                         <td class="gpu-name">Nvidia T4</td>
@@ -1263,6 +1295,7 @@
                         <td class="price">$0.59/hr • €450–550 used</td>
                         <td class="tokens" style="color: #28a745; font-weight: 700;">898 hrs</td>
                         <td class="tokens">~40–55</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -1277,6 +1310,7 @@
                         <td class="price">$0.80/hr • €1,500–2,000 used</td>
                         <td class="tokens" style="color: #28a745; font-weight: 700;">663 hrs</td>
                         <td class="tokens">~60–80</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1291,6 +1325,7 @@
                         <td class="price">$1.10/hr • €1,700–2,600 used</td>
                         <td class="tokens" style="color: #28a745; font-weight: 700;">481 hrs</td>
                         <td class="tokens">~70–90</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1305,6 +1340,7 @@
                         <td class="price">$1.95/hr • €7,500–10,200 used</td>
                         <td class="tokens" style="color: #ffc107; font-weight: 700;">272 hrs</td>
                         <td class="tokens">~140–180</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1319,6 +1355,7 @@
                         <td class="price">$2.10/hr • €7,000–9,000 used</td>
                         <td class="tokens" style="color: #ffc107; font-weight: 700;">253 hrs</td>
                         <td class="tokens">~180–220</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1333,6 +1370,7 @@
                         <td class="price">$2.50/hr • €14,000–20,500 used</td>
                         <td class="tokens" style="color: #ffc107; font-weight: 700;">212 hrs</td>
                         <td class="tokens">~200–250</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1347,6 +1385,7 @@
                         <td class="price">$3.95/hr • €27,500+ used</td>
                         <td class="tokens" style="color: #dc3545; font-weight: 700;">134 hrs</td>
                         <td class="tokens">~350–450</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1361,6 +1400,7 @@
                         <td class="price">$4.54/hr • €37,500+ used</td>
                         <td class="tokens" style="color: #dc3545; font-weight: 700;">117 hrs</td>
                         <td class="tokens">~400–500</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1375,6 +1415,7 @@
                         <td class="price">$6.25/hr • rare used</td>
                         <td class="tokens" style="color: #dc3545; font-weight: 700;">85 hrs</td>
                         <td class="tokens">~600–800</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1384,7 +1425,7 @@
                         <td colspan="12">🖥️ NVIDIA DGX Spark — Compact AI system (GB10 Grace Blackwell, 128GB unified) <span class="badge badge-new">~$4.7k / €2.8k–4.2k</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="DGX">
-                        <td>System</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>System</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="DGX" class="cloud-gpu highlight-best">
                         <td class="gpu-name">DGX Spark <span class="badge badge-value">128GB • FP4</span></td>
@@ -1397,6 +1438,7 @@
                         <td class="price">~$4,700 / €2,800–4,200</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~200–300</td>
+                        <td class="tokens fp4-native">41 ⚡</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1406,7 +1448,7 @@
                         <td colspan="12">🔴 AMD ROCm — RDNA 2 (RX 6000 Series) — Community ROCm support, shader INT8 only <span class="badge badge-warn">ROCm 5.x</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="AMD RDNA2">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF†</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF†</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="AMD RDNA2" class="amd-gpu">
                         <td class="gpu-name">RX 6800 XT</td>
@@ -1419,6 +1461,7 @@
                         <td class="price">€280–350</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~55–70</td>
+                        <td class="tokens fp4-emulated">48 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -1433,6 +1476,7 @@
                         <td class="price">€350–430</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~60–75</td>
+                        <td class="tokens fp4-emulated">48 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-no">❌</td>
                     </tr>
@@ -1442,7 +1486,7 @@
                         <td colspan="12">🔴 AMD ROCm — RDNA 3 (RX 7000 Series) — Official ROCm support, WMMA INT8+INT4 via AI Accelerators <span class="badge badge-warn">ROCm 5.7+</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="AMD RDNA3">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (WMMA)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (WMMA)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="AMD RDNA3" class="amd-gpu">
                         <td class="gpu-name">RX 7700 XT</td>
@@ -1455,6 +1499,7 @@
                         <td class="price">€280–340</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~65–80</td>
+                        <td class="tokens fp4-emulated">40 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1469,6 +1514,7 @@
                         <td class="price">€350–430</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~75–95</td>
+                        <td class="tokens fp4-emulated">54 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1483,6 +1529,7 @@
                         <td class="price">€400–500</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~75–95</td>
+                        <td class="tokens fp4-emulated">54 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1497,6 +1544,7 @@
                         <td class="price">€550–650</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~90–110</td>
+                        <td class="tokens fp4-emulated">75 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1511,6 +1559,7 @@
                         <td class="price">€650–800</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~100–130</td>
+                        <td class="tokens fp4-emulated">90 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1520,7 +1569,7 @@
                         <td colspan="12">🔴 AMD ROCm — RDNA 4 (RX 9000 Series, Mar 2025) — Full FP8 + INT4 AI Accelerators <span class="badge badge-new">NEW!</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="AMD RDNA4">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF (AI Acc)</td><td>INT4 TF (AI Acc)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF (AI Acc)</td><td>INT4 TF (AI Acc)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="AMD RDNA4" class="amd-gpu">
                         <td class="gpu-name">RX 9070</td>
@@ -1533,6 +1582,7 @@
                         <td class="price">€450–550</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~80–100</td>
+                        <td class="tokens fp4-emulated">48 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1547,6 +1597,7 @@
                         <td class="price">€550–650</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~100–130</td>
+                        <td class="tokens fp4-emulated">60 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1556,7 +1607,7 @@
                         <td colspan="12">🔴 AMD Instinct — Data Center GPUs (ROCm Cloud, Lambda Labs pricing) <span class="badge badge-new">Cloud</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="AMD Instinct">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF (CU)</td><td>FP8 TF (Matrix)</td><td>INT4 TF (Matrix)</td><td>FP4 TF</td><td>Rental Price/hr</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF (CU)</td><td>FP8 TF (Matrix)</td><td>INT4 TF (Matrix)</td><td>FP4 TF</td><td>Rental Price/hr</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="AMD Instinct" class="amd-instinct-gpu highlight-best">
                         <td class="gpu-name">AMD MI300X <span class="badge badge-new">Flagship</span></td>
@@ -1569,6 +1620,7 @@
                         <td class="price">~$4.00/hr</td>
                         <td class="tokens" style="color: #dc3545; font-weight: 700;">~133 hrs</td>
                         <td class="tokens">~600–800</td>
+                        <td class="tokens">—</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1578,7 +1630,7 @@
                         <td colspan="12">🔵 Intel ARC Alchemist (A-Series) — XMX INT8 + INT4, SYCL/llama.cpp backend <span class="badge badge-warn">oneAPI</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="Intel Arc A">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (XMX)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (XMX)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="Intel Arc A" class="intel-gpu">
                         <td class="gpu-name">Arc A380</td>
@@ -1591,6 +1643,7 @@
                         <td class="price">€80–130</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~15–25</td>
+                        <td class="tokens fp4-emulated">18 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1605,6 +1658,7 @@
                         <td class="price">€130–170</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~25–35</td>
+                        <td class="tokens fp4-emulated">48 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1619,6 +1673,7 @@
                         <td class="price">€180–240</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~30–40</td>
+                        <td class="tokens fp4-emulated">48 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1633,6 +1688,7 @@
                         <td class="price">€230–290</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~30–45</td>
+                        <td class="tokens fp4-emulated">52 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1647,6 +1703,7 @@
                         <td class="price">€290–360</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~30–45</td>
+                        <td class="tokens fp4-emulated">52 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1656,7 +1713,7 @@
                         <td colspan="12">🔵 Intel ARC Battlemage (B-Series) — Xe2 XMX with improved matrix throughput <span class="badge badge-new">2024–2025</span></td>
                     </tr>
                     <tr class="col-subheader" data-series="Intel Arc B">
-                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (XMX Xe2)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
+                        <td>GPU Model</td><td>VRAM</td><td>Mem BW</td><td>FP32 TF</td><td>FP8 TF</td><td>INT4 TF (XMX Xe2)</td><td>FP4 TF</td><td>Purchase Price</td><td>Hrs/€500</td><td>Llama 8B tok/s</td><td>FP4 tok/s</td><td>INT8 HW</td><td>INT4 HW</td>
                     </tr>
                     <tr data-series="Intel Arc B" class="intel-gpu">
                         <td class="gpu-name">Arc B50 <span class="badge badge-warn">Entry</span></td>
@@ -1669,6 +1726,7 @@
                         <td class="price">€100–140*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~18–28</td>
+                        <td class="tokens fp4-emulated">21 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1683,6 +1741,7 @@
                         <td class="price">€150–190*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~25–38</td>
+                        <td class="tokens fp4-emulated">30 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1697,6 +1756,7 @@
                         <td class="price">€230–280</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~35–50</td>
+                        <td class="tokens fp4-emulated">43 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
@@ -1711,6 +1771,7 @@
                         <td class="price">€350–450*</td>
                         <td class="no-support">—</td>
                         <td class="tokens">~50–70</td>
+                        <td class="tokens fp4-emulated">58 🔄</td>
                         <td class="support-yes">✅</td>
                         <td class="support-yes">✅</td>
                     </tr>
