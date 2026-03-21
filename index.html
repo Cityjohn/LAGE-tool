@@ -63,7 +63,12 @@
             width: auto;
             min-width: 100%;
             object-fit: cover;
-            opacity: 0.3;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+        @keyframes fadeIn {
+            to { opacity: 0.3; }
         }
         .cards-bg .bg-table {
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 16%, black 70%, transparent 100%);
@@ -247,10 +252,10 @@
         <div class="cards-wrapper">
             <div class="cards-bg">
                 <div class="bg-image bg-table">
-                    <img src="images/table.jpg" alt="" aria-hidden="true">
+                    <img src="images/table.jpg" alt="" aria-hidden="true" loading="lazy">
                 </div>
                 <div class="bg-image bg-chart">
-                    <img src="images/chart.jpg" alt="" aria-hidden="true">
+                    <img src="images/chart.jpg" alt="" aria-hidden="true" loading="lazy">
                 </div>
             </div>
             <div class="card-with-bg">
