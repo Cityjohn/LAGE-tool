@@ -93,11 +93,13 @@
         }
         header .nav-btn.nav-back:hover { background: rgba(255,255,255,0.3); border-color: white; }
         header .nav-btn.nav-next {
-            background: #f8f9fa;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: #1e3c72;
             border: 2px solid transparent;
         }
-        header .nav-btn.nav-next:hover { opacity: 0.95; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        header .nav-btn.nav-next:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         
         .controls {
             padding: 20px 30px;
