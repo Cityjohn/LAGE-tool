@@ -652,7 +652,7 @@
             background: #f8f9fa;
             border-radius: 12px;
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
@@ -686,8 +686,14 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            min-width: 600px;
-            table-layout: fixed;
+            table-layout: auto;
+        }
+        .compare-table col.spec-col {
+            width: 130px;
+            min-width: 130px;
+        }
+        .compare-table col.gpu-col {
+            min-width: 180px;
         }
         .compare-table th {
             padding: 12px 14px;
@@ -706,9 +712,6 @@
             font-size: 0.78em;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            width: 130px;
-            min-width: 130px;
-            max-width: 130px;
         }
         .compare-table td {
             padding: 9px 14px;
@@ -723,9 +726,6 @@
             font-weight: 600;
             color: #495057;
             font-size: 0.82em;
-            width: 130px;
-            min-width: 130px;
-            max-width: 130px;
         }
         .compare-table tbody tr:hover td { background: #f0f0f0 !important; }
 
@@ -1941,7 +1941,8 @@
                 <button class="modal-close" onclick="closeCompareModal()">✕</button>
             </div>
             <div class="modal-body">
-                <table class="compare-table">
+                <table class="compare-table" id="compareTable">
+                    <colgroup></colgroup>
                     <thead><tr id="compareTableHeader"></tr></thead>
                     <tbody id="compareTableBody"></tbody>
                 </table>
@@ -2171,6 +2172,15 @@
         function openCompareModal() {
             if (compareMap.size < 2) { showToast('Select at least 2 GPUs to compare.'); return; }
             const gpus = Array.from(compareMap.values());
+
+            // Dynamic modal width: 130px for spec + 180px per GPU, min 600px
+            const modalWidth = Math.min(window.innerWidth - 40, Math.max(600, 130 + gpus.length * 180));
+            document.querySelector('.modal-box').style.maxWidth = modalWidth + 'px';
+
+            // Colgroup for column widths
+            let colHTML = '<col class="spec-col">';
+            gpus.forEach(() => { colHTML += '<col class="gpu-col">'; });
+            document.querySelector('#compareTable colgroup').innerHTML = colHTML;
 
             // Header row
             let hHTML = '<th>Specification</th>';
