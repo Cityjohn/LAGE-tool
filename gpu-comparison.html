@@ -644,7 +644,6 @@
             align-items: flex-start;
             justify-content: center;
             overflow-y: auto;
-            overflow-x: hidden;
             padding: 30px 40px 60px;
         }
         .modal-overlay.visible { display: flex; }
@@ -652,8 +651,8 @@
         .modal-box {
             background: #f8f9fa;
             border-radius: 12px;
-            width: 100%;
-            max-width: 1200px;
+            width: fit-content;
+            max-width: calc(100vw - 80px);
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
@@ -2174,9 +2173,9 @@
             if (compareMap.size < 2) { showToast('Select at least 2 GPUs to compare.'); return; }
             const gpus = Array.from(compareMap.values());
 
-            // Dynamic modal width: 130px for spec + 180px per GPU, min 600px
-            const modalWidth = Math.min(window.innerWidth - 80, Math.max(600, 130 + gpus.length * 180));
-            document.querySelector('.modal-box').style.maxWidth = modalWidth + 'px';
+            // Dynamic modal width: 130px for spec + 180px per GPU
+            const contentWidth = 130 + gpus.length * 180;
+            document.querySelector('.modal-box').style.width = Math.min(contentWidth, window.innerWidth - 80) + 'px';
 
             // Colgroup for column widths
             let colHTML = '<col class="spec-col">';
