@@ -644,7 +644,7 @@
             align-items: flex-start;
             justify-content: center;
             overflow-y: auto;
-            padding: 30px 15px 60px;
+            padding: 30px 40px 60px;
         }
         .modal-overlay.visible { display: flex; }
 
@@ -2174,7 +2174,7 @@
             const gpus = Array.from(compareMap.values());
 
             // Dynamic modal width: 130px for spec + 180px per GPU, min 600px
-            const modalWidth = Math.min(window.innerWidth - 40, Math.max(600, 130 + gpus.length * 180));
+            const modalWidth = Math.min(window.innerWidth - 80, Math.max(600, 130 + gpus.length * 180));
             document.querySelector('.modal-box').style.maxWidth = modalWidth + 'px';
 
             // Colgroup for column widths
