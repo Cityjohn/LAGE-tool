@@ -67,6 +67,25 @@ window.GPU_DATA = [
   { name: "Arc B60", price: 170, bandwidth: 320, series: "arcB", vram: "8GB", fp4Tokens: 30, fp4Method: "emulated" },
   { name: "Arc B580", price: 255, bandwidth: 456, series: "arcB", vram: "12GB", fp4Tokens: 43, fp4Method: "emulated" },
   { name: "Arc B770", price: 400, bandwidth: 616, series: "arcB", vram: "16GB", fp4Tokens: 58, fp4Method: "emulated" },
+  // Intel Arc Pro Battlemage (no native FP4, 32GB workstation)
+  { name: "Arc Pro B70", price: 949, bandwidth: 608, series: "arcB", vram: "32GB", note: "Workstation, 230W TBP, INT8 367 TOPS", fp4Tokens: 57, fp4Method: "emulated" },
+  // NVIDIA Workstation (Ampere/Ada — no native FP4)
+  { name: "RTX A6000", price: 4500, bandwidth: 768, series: "workstation", vram: "48GB", note: "Ampere workstation, ECC, NVLink", fp4Tokens: 72, fp4Method: "emulated" },
+  { name: "RTX 6000 Ada", price: 6800, bandwidth: 960, series: "workstation", vram: "48GB", note: "Ada workstation, ECC, 300W", fp4Tokens: 90, fp4Method: "emulated" },
+  // NVIDIA Workstation (Blackwell — native FP4)
+  { name: "RTX Pro 6000 Blackwell", price: 8500, bandwidth: 1800, series: "workstationBlackwell", vram: "96GB", note: "Blackwell workstation, GDDR7, ECC, 5th-gen Tensor, 600W", fp4Tokens: 259, fp4Method: "native" },
+  // AMD Workstation (RDNA 3 — no native FP4)
+  { name: "Radeon Pro W7900", price: 3499, bandwidth: 864, series: "workstationAmd", vram: "48GB", note: "RDNA 3 workstation, ECC, 384-bit", fp4Tokens: 81, fp4Method: "emulated" },
+  // Apple Silicon (unified memory — no FP4, no discrete VRAM)
+  { name: "Mac Mini M4 Pro 48GB", price: 1599, bandwidth: 273, series: "apple", vram: "48GB", note: "Unified memory, no FP4, 5W idle", fp4Tokens: 25, fp4Method: "emulated" },
+  { name: "Mac Mini M4 Pro 64GB", price: 1999, bandwidth: 273, series: "apple", vram: "64GB", note: "Unified memory, no FP4, 5W idle", fp4Tokens: 25, fp4Method: "emulated" },
+  { name: "Mac Studio M2 Ultra 64GB", price: 3999, bandwidth: 800, series: "apple", vram: "64GB", note: "Unified memory, no FP4, 800GB/s", fp4Tokens: 75, fp4Method: "emulated" },
+  { name: "Mac Studio M2 Ultra 192GB", price: 6199, bandwidth: 800, series: "apple", vram: "192GB", note: "Unified memory, no FP4, can run 70B+ models", fp4Tokens: 75, fp4Method: "emulated" },
+  { name: "Mac Studio M3 Ultra 96GB", price: 3999, bandwidth: 819, series: "apple", vram: "96GB", note: "Unified memory, no FP4, 819GB/s", fp4Tokens: 77, fp4Method: "emulated" },
+  { name: "Mac Studio M3 Ultra 512GB", price: 10499, bandwidth: 819, series: "apple", vram: "512GB", note: "Unified memory, no FP4, can run any model", fp4Tokens: 77, fp4Method: "emulated" },
+  // Edge / Dev Boards (no FP4)
+  { name: "Jetson Orin NX 16GB", price: 599, bandwidth: 102, series: "edge", vram: "16GB", note: "Edge AI, Ampere, 157 TOPS, 25W TDP", fp4Tokens: 10, fp4Method: "emulated" },
+  { name: "RPi 5 + Hailo-8L", price: 110, bandwidth: 102, series: "edge", vram: "8GB", note: "Ultra-budget edge, ARM + NPU, ~13 TOPS", fp4Tokens: 10, fp4Method: "emulated" },
 ];
 
 /*

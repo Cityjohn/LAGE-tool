@@ -341,18 +341,24 @@
         // Color by manufacturer, shape by series
         const manufacturerBySeries = {
             '30': 'nvidia', '40': 'nvidia', '50': 'nvidia', 'cloud': 'nvidia', 'dgx': 'nvidia',
-            'rdna2': 'amd', 'rdna3': 'amd', 'rdna4': 'amd', 'instinct': 'amd',
-            'arcA': 'intel', 'arcB': 'intel'
+            'workstation': 'nvidia', 'workstationBlackwell': 'nvidia',
+            'rdna2': 'amd', 'rdna3': 'amd', 'rdna4': 'amd', 'instinct': 'amd', 'workstationAmd': 'amd',
+            'arcA': 'intel', 'arcB': 'intel',
+            'apple': 'apple', 'edge': 'edge'
         };
         const manufacturerColors = {
             nvidia: '#76B900',
             amd: '#ED1C24',
-            intel: '#0071C5'
+            intel: '#0071C5',
+            apple: '#666666',
+            edge: '#9C27B0'
         };
         const seriesShapes = {
             '30': 'circle', '40': 'triangle', '50': 'rect', 'cloud': 'cross', 'dgx': 'star',
-            'rdna2': 'circle', 'rdna3': 'triangle', 'rdna4': 'rect', 'instinct': 'star',
-            'arcA': 'circle', 'arcB': 'triangle'
+            'workstation': 'rect', 'workstationBlackwell': 'star',
+            'rdna2': 'circle', 'rdna3': 'triangle', 'rdna4': 'rect', 'instinct': 'star', 'workstationAmd': 'rect',
+            'arcA': 'circle', 'arcB': 'triangle',
+            'apple': 'circle', 'edge': 'cross'
         };
         
         const seriesLabels = {
@@ -360,13 +366,18 @@
             '40': 'RTX 40',
             '50': 'RTX 50',
             'cloud': 'NVIDIA Cloud',
+            'workstation': 'NVIDIA WS',
+            'workstationBlackwell': 'NVIDIA WS Blackwell',
             'rdna2': 'AMD RDNA 2',
             'rdna3': 'AMD RDNA 3',
             'rdna4': 'AMD RDNA 4',
             'instinct': 'AMD Instinct',
+            'workstationAmd': 'AMD WS',
             'arcA': 'Intel Arc A',
             'arcB': 'Intel Arc B',
-            'dgx': 'NVIDIA DGX'
+            'dgx': 'NVIDIA DGX',
+            'apple': 'Apple Silicon',
+            'edge': 'Edge / Dev'
         };
         
         // Group by series for coloring
